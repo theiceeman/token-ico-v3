@@ -1,0 +1,67 @@
+{
+  "name": "floki-dodge",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "kelvin <okorieebube1@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@nomiclabs/hardhat-etherscan": "^2.1.8",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "dotenv": "^10.0.0",
+    "hardhat": "^2.7.0",
+    "react": "^17.0.2",
+    "react-countdown": "^2.3.2",
+    "react-dom": "^17.0.2",
+    "react-hot-toast": "^2.1.1",
+    "react-redux": "^7.2.6",
+    "react-scripts": "4.0.3",
+    "redux": "^4.1.2",
+    "redux-thunk": "^2.4.1",
+    "validatorjs": "^3.22.1",
+    "web-vitals": "^1.0.1"
+  },
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.0",
+    "@nomiclabs/hardhat-waffle": "^2.0.0",
+    "chai": "^4.2.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "ethereum-waffle": "^3.0.0",
+    "ethers": "^5.0.0",
+    "git-cz": "^4.8.0",
+    "solidity-coverage": "^0.7.17"
+  },
+  "scripts": {
+    "commit": "git-cz",
+    "coverage": "npx hardhat coverage --testfiles 'test/*.js' ",
+    "server": "npx hardhat node",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "clean": "npx hardhat clean",
+    "compile": "npx hardhat compile",
+    "test": "hardhat test --network hardhat",
+    "test:token": "hardhat test --network hardhat ./test/LinkToken-test.js",
+    "test:crowdsale": "hardhat test --network hardhat ./test/LinkTokenCrowdsale-test.js",
+    "test:timelock": "hardhat test --network hardhat ./test/TimeLock-test.js",
+    "deploy:localhost": "npx hardhat run --network localhost scripts/run.js",
+    "deploy:fork": "npx hardhat run --network hardhat scripts/run.js"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "git-cz"
+    }
+  }
+}
