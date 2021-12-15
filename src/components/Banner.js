@@ -65,10 +65,10 @@ const Banner = ({tokenDetails}) => {
           <div className="col-sm-6 col-md-12 col-lg-6 img-wrapper">
             <div className="intro-img">
               <div className="bounce_wrapper">
-                <img src="images/header-06.png" alt="" />
+                <img src={window.location.origin+'/images/header-06.png'} alt="" />
                 <div className="shape-1">
                   <div className="box bounce-1">
-                    <img src="images/bounce/header1_b.png" alt="" />
+                    <img src={window.location.origin+'/images/bounce/header1_b.png'} alt="" />
                   </div>
                 </div>
               </div>
@@ -77,34 +77,34 @@ const Banner = ({tokenDetails}) => {
         </div>
       </div>
       <span className="shape1 header-shape">
-        <img src="images/shape/home_6/header6_shape_1.png" alt="" />
+        <img src={window.location.origin+"/images/shape/home_6/header6_shape_1.png"} alt="" />
       </span>
       <span className="shape2 header-shape">
-        <img src="images/shape/home_6/header6_shape_2.png" alt="" />
+        <img src={window.location.origin+"/images/shape/home_6/header6_shape_2.png"} alt="" />
       </span>
       <span className="shape3 header-shape">
-        <img src="images/shape/home_6/header6_shape_3.png" alt="" />
+        <img src={window.location.origin+"/images/shape/home_6/header6_shape_3.png"} alt="" />
       </span>
       <span className="shape4 header-shape">
-        <img src="images/shape/home_6/header6_shape_4.png" alt="" />
+        <img src={window.location.origin+"/images/shape/home_6/header6_shape_4.png"} alt="" />
       </span>
       <span className="shape5 header-shape">
-        <img src="images/shape/home_6/header6_shape_5.png" alt="" />
+        <img src={window.location.origin+"/images/shape/home_6/header6_shape_5.png"} alt="" />
       </span>
       <span className="shape6 header-shape">
-        <img src="images/shape/home_6/header6_shape_6.png" alt="" />
+        <img src={window.location.origin+"/images/shape/home_6/header6_shape_6.png"} alt="" />
       </span>
       <span className="bubble1 header-shape">
-        <img src="images/particals_icon/fixed1.png" alt="" />
+        <img src={window.location.origin+"/images/particals_icon/fixed1.png"} alt="" />
       </span>
       <span className="bubble2 header-shape">
-        <img src="images/particals_icon/fixed1.png" alt="" />
+        <img src={window.location.origin+"/images/particals_icon/fixed1.png"} alt="" />
       </span>
       <span className="bubble3 header-shape">
-        <img src="images/particals_icon/fixed2.png" alt="" />
+        <img src={window.location.origin+"/images/particals_icon/fixed2.png"} alt="" />
       </span>
       <span className="bubble4 header-shape">
-        <img src="images/particals_icon/fixed4.png" alt="" />
+        <img src={window.location.origin+"/images/particals_icon/fixed4.png"} alt="" />
       </span>
       <div id="particles1-js" className="particles" />
     </>

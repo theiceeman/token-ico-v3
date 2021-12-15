@@ -15,9 +15,11 @@ import Whitepaper from "../components/Whitepaper";
 import { fetchCrowdsaleDetails } from "../providers/redux/_actions/crowdsale-actions";
 import { authenticateUser } from "../providers/redux/_actions/user-actions";
 import { SimpleToastError, SimpleToastSuccess } from "../lib/validation/handlers/error-handlers";
+import Login from "../components/Login";
 
 const Home = () => {
   const dispatch = useDispatch();
+  // const { id:ref } = useParams();
 
   const { data: token } = useSelector((state) => state.FetchTokenDetails);
   const [tokenDetails, setTokenDetails] = useState({});
@@ -74,6 +76,8 @@ const Home = () => {
       {/* End token_distribution */}
       <Roadmap />
       {/* End roadmap */}
+      <Login/>
+      {/* Login & signup */}
       <Partners />
       {/* End companis_supported */}
       <Footer />

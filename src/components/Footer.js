@@ -9,7 +9,7 @@ const Footer = () => {
               <div className="footer-single-col footer_single_list_1">
                 <h3 className="subtitle_1">
                   &nbsp;
-                  <img src="images/Seriena.png" alt />
+                  <img src={window.location.origin+"/images/Seriena.png"} alt />
                 </h3>
                 <p>
                 Seriena offers your teams the full capabilities of crypto with the tools to go from concept to launch in days instead of months.
@@ -70,13 +70,13 @@ const Footer = () => {
         </p>
       </div>
       <span className="shape1 header-shape">
-        <img src="images/shape/home_6/footer_shape_1.png" alt />
+        <img src={window.location.origin+"/images/shape/home_6/footer_shape_1.png"} alt />
       </span>
       <span className="shape2 header-shape">
-        <img src="images/shape/home_6/footer_shape_2.png" alt />
+        <img src={window.location.origin+"/images/shape/home_6/footer_shape_2.png"} alt />
       </span>
       <span className="shape3 header-shape">
-        <img src="images/shape/home_6/footer_shape_3.png" alt />
+        <img src={window.location.origin+"/images/shape/home_6/footer_shape_3.png"} alt />
       </span>
     </footer>
      );

@@ -113,10 +113,10 @@ const Roadmap = () => {
         </div>
       </div>
       <span className="shape2 header-shape">
-        <img src="images/shape/home_6/road_map_2.png" alt />
+        <img src={window.location.origin+"/images/shape/home_6/road_map_2.png"} alt />
       </span>
       <span className="shape3 header-shape">
-        <img src="images/shape/home_6/road_map_3.png" alt />
+        <img src={window.location.origin+"/images/shape/home_6/road_map_3.png"} alt />
       </span>
       <div id="particles7-js" className="particles" />
     </section>

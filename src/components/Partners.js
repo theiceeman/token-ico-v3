@@ -27,28 +27,28 @@ const Partners = () => {
                   data-wow-delay=".5s"
                 >
                   <li>
-                    <img src="images/logos/partner6-1.png" alt />
+                    <img src={window.location.origin+"/images/logos/partner6-1.png"} alt />
                   </li>
                   <li>
-                    <img src="images/logos/partner6-2.png" alt />
+                    <img src={window.location.origin+"/images/logos/partner6-2.png"} alt />
                   </li>
                   <li>
-                    <img src="images/logos/partner6-3.png" alt />
+                    <img src={window.location.origin+"/images/logos/partner6-3.png"} alt />
                   </li>
                   <li>
-                    <img src="images/logos/partner6-4.png" alt />
+                    <img src={window.location.origin+"/images/logos/partner6-4.png"} alt />
                   </li>
                   <li>
-                    <img src="images/logos/partner6-5.png" alt />
+                    <img src={window.location.origin+"/images/logos/partner6-5.png"} alt />
                   </li>
                   <li>
-                    <img src="images/logos/partner6-6.png" alt />
+                    <img src={window.location.origin+"/images/logos/partner6-6.png"} alt />
                   </li>
                   <li>
-                    <img src="images/logos/partner6-7.png" alt />
+                    <img src={window.location.origin+"/images/logos/partner6-7.png"} alt />
                   </li>
                   <li>
-                    <img src="images/logos/partner6-8.png" alt />
+                    <img src={window.location.origin+"/images/logos/partner6-8.png"} alt />
                   </li>
                 </ul>
               </div>
@@ -57,10 +57,10 @@ const Partners = () => {
         </div>
         <div id="particles8-js" className="particles" />
         <span className="bubble1 header-shape">
-          <img src="images/particals_icon/fixed1.png" alt />
+          <img src={window.location.origin+"/images/particals_icon/fixed1.png"} alt />
         </span>
         <span className="bubble2 header-shape">
-          <img src="images/particals_icon/fixed2.png" alt />
+          <img src={window.location.origin+"/images/particals_icon/fixed2.png"} alt />
         </span>
       </section>
      );

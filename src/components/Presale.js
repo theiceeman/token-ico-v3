@@ -197,19 +197,19 @@ const Presale = ({ tokenDetails, crowdsaleDetails, userAccount }) => {
         </div>
       </div>
       <span className="shape1 header-shape">
-        <img src="images/shape/home_6/token_sale.png" alt />
+        <img src={window.location.origin+"/images/shape/home_6/token_sale.png"} alt />
       </span>
       <span className="shape2 header-shape">
-        <img src="images/shape/home_6/token_sale_1.png" alt />
+        <img src={window.location.origin+"/images/shape/home_6/token_sale_1.png"} alt />
       </span>
       <span className="bubble1 header-shape">
-        <img src="images/particals_icon/fixed1.png" alt />
+        <img src={window.location.origin+"/images/particals_icon/fixed1.png"} alt />
       </span>
       <span className="bubble2 header-shape">
-        <img src="images/particals_icon/fixed1.png" alt />
+        <img src={window.location.origin+"/images/particals_icon/fixed1.png"} alt />
       </span>
       <span className="bubble4 header-shape">
-        <img src="images/particals_icon/fixed3.png" alt />
+        <img src={window.location.origin+"/images/particals_icon/fixed3.png"} alt />
       </span>
       <div id="particles5-js" className="particles" />
     </section>

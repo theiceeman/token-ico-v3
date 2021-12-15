@@ -24,7 +24,7 @@ const Navbar = ({userAccount}) => {
           <i className="fas fa-bars" />
         </button>
         <a className="navbar-brand" data-scroll href="index.html">
-          <img src="images/Seriena.png" alt="logo" />
+          <img src={window.location.origin+"/images/Seriena.png"} alt="logo" />
         </a>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ml-auto">

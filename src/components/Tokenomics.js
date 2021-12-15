@@ -39,19 +39,19 @@ const Tokenomics = () => {
                   <h3>Token</h3>
                   <div className="token_shape">
                     <span className="shape1 header-shape">
-                      <img src="images/shape/home_6/token_1.png" alt />
+                      <img src={window.location.origin+"/images/shape/home_6/token_1.png"} alt />
                     </span>
                     <span className="shape2 header-shape">
-                      <img src="images/shape/home_6/token_2.png" alt />
+                      <img src={window.location.origin+"/images/shape/home_6/token_2.png"} alt />
                     </span>
                     <span className="shape3 header-shape">
-                      <img src="images/shape/home_6/token_3.png" alt />
+                      <img src={window.location.origin+"/images/shape/home_6/token_3.png"} alt />
                     </span>
                     <span className="shape4 header-shape">
-                      <img src="images/shape/home_6/token_4.png" alt />
+                      <img src={window.location.origin+"/images/shape/home_6/token_4.png"} alt />
                     </span>
                     <span className="shape5 header-shape">
-                      <img src="images/shape/home_6/token_5.png" alt />
+                      <img src={window.location.origin+"/images/shape/home_6/token_5.png"} alt />
                     </span>
                   </div>
                 </div>
@@ -111,19 +111,19 @@ const Tokenomics = () => {
                   <h3>Sale</h3>
                   <div className="token_shape">
                     <span className="shape1 header-shape">
-                      <img src="images/shape/home_6/token_1.png" alt />
+                      <img src={window.location.origin+"/images/shape/home_6/token_1.png"} alt />
                     </span>
                     <span className="shape2 header-shape">
-                      <img src="images/shape/home_6/token_2.png" alt />
+                      <img src={window.location.origin+"/images/shape/home_6/token_2.png"} alt />
                     </span>
                     <span className="shape3 header-shape">
-                      <img src="images/shape/home_6/token_3.png" alt />
+                      <img src={window.location.origin+"/images/shape/home_6/token_3.png"} alt />
                     </span>
                     <span className="shape4 header-shape">
-                      <img src="images/shape/home_6/token_4.png" alt />
+                      <img src={window.location.origin+"/images/shape/home_6/token_4.png"} alt />
                     </span>
                     <span className="shape5 header-shape">
-                      <img src="images/shape/home_6/token_5.png" alt />
+                      <img src={window.location.origin+"/images/shape/home_6/token_5.png"} alt />
                     </span>
                   </div>
                 </div>

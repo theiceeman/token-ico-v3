@@ -53,3 +53,7 @@ body {
   opacity: 0;
   visibility: visible;
 }
+#contact_06 .contact_form {
+  background: transparent;
+  margin-top: 0px;
+}
