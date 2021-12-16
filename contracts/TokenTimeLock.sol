@@ -22,6 +22,7 @@ contract TokenTimeLock is Ownable {
     // mapping(beneficiary => vault_id => amount_locked, release_time, isReleased)
     mapping(address => mapping(uint256 => TokenTimeLockDetails))
         public UserTokenVault;
+    // number of vaults created for user - can rep. no of time they bough token
     mapping(address => uint256) public totalUserVaults;
 
     mapping(address => uint256) public TotalUserTokensLocked;

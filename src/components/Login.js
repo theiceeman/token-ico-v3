@@ -8,6 +8,7 @@ import {
   SimpleToastSuccess,
   ToastFormErrors,
 } from "../lib/validation/handlers/error-handlers";
+import { signUp } from "../providers/redux/_actions/user-actions";
 const Login = () => {
     // https://www.pomicoin.com/app/invite?ref=UD01303
   const dispatch = useDispatch();
@@ -30,7 +31,7 @@ const Login = () => {
 
     if (validation.passes()) {
       console.log("passed");
-      dispatch(buyTokens(values.amount));
+      signUp(data);
     }
   };
 
@@ -64,7 +65,7 @@ const Login = () => {
                       type="text"
                       className="form-control"
                       name="name"
-                      placeholder="Your Name"
+                      placeholder="Your username"
                     />
                   </div>
                   <div

@@ -5,6 +5,7 @@ async function main() {
     const LinkToken = await ethers.getContractFactory("LinkToken");
     const linkToken = await LinkToken.deploy(1000000);
     await linkToken.deployed();
+    console.log("token address "+linkToken.address)
 
     const tokenPrice = "1000000000000000"; //  in wei = 0.001 ETH
     const referrerPercentage = "10";
@@ -19,6 +20,7 @@ async function main() {
       amtClaimedPerAirdrop
     );
     await linkCrowdSale.deployed();
+    console.log("crowdsale address "+linkCrowdSale.address)
 
     const TokenTimeLock = await ethers.getContractFactory("TokenTimeLock");
     const tokenTimeLock = await TokenTimeLock.deploy(
@@ -30,6 +32,7 @@ async function main() {
 
     await linkToken.transfer(linkCrowdSale.address, 750000); // Transfer 75% of total supply to crowdsale
     await linkCrowdSale.setTimeLock(tokenTimeLock.address);
+    console.log("TimeLock address "+tokenTimeLock.address)
 }
 
 main()

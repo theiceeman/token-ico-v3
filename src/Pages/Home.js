@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom"
 import { _fetchTokenDetails } from "../providers/redux/_actions/token-actions";
 import { Auth } from "../lib/ethers/Auth";
 import "../components/Header-scripts"
@@ -16,10 +17,11 @@ import { fetchCrowdsaleDetails } from "../providers/redux/_actions/crowdsale-act
 import { authenticateUser } from "../providers/redux/_actions/user-actions";
 import { SimpleToastError, SimpleToastSuccess } from "../lib/validation/handlers/error-handlers";
 import Login from "../components/Login";
+import { validateReferrer } from "../providers/redux/_actions/timelock-actions";
 
-const Home = () => {
+const Home = (props) => {
   const dispatch = useDispatch();
-  // const { id:ref } = useParams();
+  const { id:ref } = useParams();
 
   const { data: token } = useSelector((state) => state.FetchTokenDetails);
   const [tokenDetails, setTokenDetails] = useState({});
@@ -31,7 +33,12 @@ const Home = () => {
 
   const { data: Auth } = useSelector((state) => state.UserAuth);
   const [userAccount, setUserAccount] = useState();
-  // console.log(userAccount)
+
+  if(ref){
+    validateReferrer(ref)
+    console.log(ref)
+
+  }
 
   // track user account auth
   useEffect(() => {

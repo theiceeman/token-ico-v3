@@ -1,14 +1,18 @@
+import { Request } from "../../../lib/api/http";
 import { Auth } from "../../../lib/ethers/Auth";
 import { UserAuthConstants } from "../_constants/user-auth-constants";
 
 const {
   USER_AUTH_REQUEST,
   USER_AUTH_SUCCESS,
-  USER_AUTH_FAILURE,
-  // USER_WALLET_CONN_REQUEST,
-  // USER_WALLET_CONN_SUCCESS,
-  // USER_WALLET_CONN_FAILURE,
+  USER_AUTH_FAILURE
 } = UserAuthConstants;
+
+
+const authHeaders = {
+  'Accept' : 'application/json',
+  'Content-Type' : 'application/json',
+}
 
 export const authenticateUser = () => async (dispatch) => {
   console.log("verifying user client configs...");
@@ -63,3 +67,19 @@ export const connectToUserWallet = () => async (dispatch) => {
     // console.log({ error });
   }
 };
+
+export const signUp = async (data) => {
+  try {
+    const request = {
+        config: {
+            headers : authHeaders
+        },
+        payload: data
+    }
+    let result = await Request.post(`signup`, request)
+    console.log(result.data)
+    return result.data
+  } catch (error) {
+    console.log({error}) 
+  }
+}
