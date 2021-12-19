@@ -1,27 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom"
+import { useParams } from "react-router-dom";
 import { _fetchTokenDetails } from "../providers/redux/_actions/token-actions";
-import { Auth } from "../lib/ethers/Auth";
-import "../components/Header-scripts"
-import About from "../components/About";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
-import Partners from "../components/Partners";
-import Preloader from "../components/Preloader";
-import Presale from "../components/Presale";
-import Roadmap from "../components/Roadmap";
-import Tokenomics from "../components/Tokenomics";
-import Whitepaper from "../components/Whitepaper";
+import "../components/home/Header-scripts";
+import About from "../components/home/About";
+import Footer from "../components/home/Footer";
+import Header from "../components/home/Header";
+import Partners from "../components/home/Partners";
+import Preloader from "../components/home/Preloader";
+import Presale from "../components/home/Presale";
+import Login from "../components/home/Login";
+import Roadmap from "../components/home/Roadmap";
+import Tokenomics from "../components/home/Tokenomics";
+import Whitepaper from "../components/home/Whitepaper";
+import Dashboard from "../components/home/Dashboard";
 import { fetchCrowdsaleDetails } from "../providers/redux/_actions/crowdsale-actions";
-import { authenticateUser } from "../providers/redux/_actions/user-actions";
-import { SimpleToastError, SimpleToastSuccess } from "../lib/validation/handlers/error-handlers";
-import Login from "../components/Login";
-import { validateReferrer } from "../providers/redux/_actions/timelock-actions";
+import {
+  authenticateUser,
+  validateReferrer,
+} from "../providers/redux/_actions/user-actions";
+import {
+  SimpleToastError,
+  SimpleToastSuccess,
+} from "../lib/validation/handlers/error-handlers";
 
 const Home = (props) => {
   const dispatch = useDispatch();
-  const { id:ref } = useParams();
+  let { id } = useParams();
+  const [referrer, setReferrer] = useState(null);
 
   const { data: token } = useSelector((state) => state.FetchTokenDetails);
   const [tokenDetails, setTokenDetails] = useState({});
@@ -33,19 +39,23 @@ const Home = (props) => {
 
   const { data: Auth } = useSelector((state) => state.UserAuth);
   const [userAccount, setUserAccount] = useState();
+  console.log(userAccount)
 
-  if(ref){
-    validateReferrer(ref)
-    console.log(ref)
-
-  }
+  useEffect(async () => {
+    if (id) {
+      let verifyReferrer = await validateReferrer(id);
+      if (!verifyReferrer.error) {
+        setReferrer(id);
+      }
+    }
+  }, [id]);
 
   // track user account auth
   useEffect(() => {
     if (Auth?.error === true) {
       SimpleToastError(Auth.message);
     } else if (Auth?.error === false) {
-      setUserAccount(Auth.message)
+      setUserAccount(Auth.message);
     }
   }, [Auth]);
   // track token contract
@@ -67,7 +77,7 @@ const Home = (props) => {
     <div>
       {/* Preloader */}
       <Preloader />
-      <Header tokenDetails={tokenDetails} userAccount={userAccount}/>
+      <Header tokenDetails={tokenDetails} userAccount={userAccount} />
       {/* End Header */}
       <About />
       {/* End welcome_cryptonic */}
@@ -83,12 +93,13 @@ const Home = (props) => {
       {/* End token_distribution */}
       <Roadmap />
       {/* End roadmap */}
-      <Login/>
+      <Login referrer={referrer} />
       {/* Login & signup */}
       <Partners />
       {/* End companis_supported */}
       <Footer />
       {/* ./ End Footer Area*/}
+      <Dashboard/>
     </div>
   );
 };

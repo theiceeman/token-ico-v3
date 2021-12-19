@@ -1,18 +1,18 @@
 import { Request } from "../../../lib/api/http";
 import { Auth } from "../../../lib/ethers/Auth";
+import {
+  SimpleToastError,
+  SimpleToastSuccess,
+} from "../../../lib/validation/handlers/error-handlers";
 import { UserAuthConstants } from "../_constants/user-auth-constants";
 
-const {
-  USER_AUTH_REQUEST,
-  USER_AUTH_SUCCESS,
-  USER_AUTH_FAILURE
-} = UserAuthConstants;
-
+const { USER_AUTH_REQUEST, USER_AUTH_SUCCESS, USER_AUTH_FAILURE } =
+  UserAuthConstants;
 
 const authHeaders = {
-  'Accept' : 'application/json',
-  'Content-Type' : 'application/json',
-}
+  Accept: "application/json",
+  "Content-Type": "application/json",
+};
 
 export const authenticateUser = () => async (dispatch) => {
   console.log("verifying user client configs...");
@@ -31,7 +31,6 @@ export const authenticateUser = () => async (dispatch) => {
     if (networkConnectedTo.error) {
       throw networkConnectedTo;
     }
-    console.log(checkUserAccConnection);
     dispatch({
       type: USER_AUTH_SUCCESS,
       payload: checkUserAccConnection,
@@ -54,7 +53,6 @@ export const connectToUserWallet = () => async (dispatch) => {
     if (isWalletConnected.error) {
       throw isWalletConnected;
     }
-    console.log(isWalletConnected);
     dispatch({
       type: USER_AUTH_SUCCESS,
       payload: isWalletConnected,
@@ -71,15 +69,36 @@ export const connectToUserWallet = () => async (dispatch) => {
 export const signUp = async (data) => {
   try {
     const request = {
-        config: {
-            headers : authHeaders
-        },
-        payload: data
-    }
-    let result = await Request.post(`signup`, request)
-    console.log(result.data)
-    return result.data
+      config: {
+        headers: authHeaders,
+      },
+      payload: data,
+    };
+    let result = await Request.post(`signup`, request);
+    console.log(result.data);
+    if (result.data.error) throw result.data.message;
+
+    SimpleToastSuccess(result.data.message);
+    setTimeout(() => {
+      window.location.reload(false);
+    }, 2000);
   } catch (error) {
-    console.log({error}) 
+    console.log(error);
+    SimpleToastError(error);
   }
-}
+};
+
+export const validateReferrer = async (referrer) => {
+  try {
+    let isValid = await Request.get(`verify/referrer/${referrer}`);
+    // console.log(isValid.data)
+    if (isValid.data.error) {
+      throw isValid.data.message;
+    }
+    return { error: false, message: null };
+    // console.log(isValid.data.message)
+  } catch (error) {
+    console.log({ error });
+    return { error: true, message: error };
+  }
+};
