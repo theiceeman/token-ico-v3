@@ -19,7 +19,7 @@ const Navbar = ({ userAccount }) => {
   } else {
     authButton = <button
       type="button"
-      class="btn btn-primary token"
+      className="btn btn-primary token"
       data-toggle="modal"
       data-target="#exampleModalCenter"
     >

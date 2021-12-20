@@ -1,13 +1,22 @@
+import { BigNumber } from "ethers";
 import { Request } from "../../../lib/api/http";
 import { Auth } from "../../../lib/ethers/Auth";
+import { crowdsale } from "../../../lib/ethers/contracts/crowdsale_methods";
+import { timelock } from "../../../lib/ethers/contracts/timelock_methods";
 import {
   SimpleToastError,
   SimpleToastSuccess,
 } from "../../../lib/validation/handlers/error-handlers";
 import { UserAuthConstants } from "../_constants/user-auth-constants";
 
-const { USER_AUTH_REQUEST, USER_AUTH_SUCCESS, USER_AUTH_FAILURE } =
-  UserAuthConstants;
+const {
+  USER_AUTH_REQUEST,
+  USER_AUTH_SUCCESS,
+  USER_AUTH_FAILURE,
+  FETCH_USER_DATA_REQUEST,
+  FETCH_USER_DATA_SUCCESS,
+  FETCH_USER_DATA_FAILURE,
+} = UserAuthConstants;
 
 const authHeaders = {
   Accept: "application/json",
@@ -90,15 +99,113 @@ export const signUp = async (data) => {
 
 export const validateReferrer = async (referrer) => {
   try {
-    let isValid = await Request.get(`verify/referrer/${referrer}`);
-    // console.log(isValid.data)
-    if (isValid.data.error) {
-      throw isValid.data.message;
+    let result = await timelock.UserTokenVault(referrer);
+    if (result.error) {
+      throw result.message;
     }
     return { error: false, message: null };
-    // console.log(isValid.data.message)
   } catch (error) {
-    console.log({ error });
+    // console.log({ error });
     return { error: true, message: error };
   }
+};
+
+export const fetchUserData = (user_address) => async (dispatch) => {
+  console.log("fetch user data...");
+  dispatch({ type: FETCH_USER_DATA_REQUEST });
+  /* 
+    purchase_balance: 
+    bonus_balance:
+    vaults:[]
+    referrals:[]
+   */
+  let User = {};
+  try {
+    let no_of_vaults = await timelock.totalUserVaults(user_address);
+    // console.log('damn!', 'no_of_vaults');return;
+    if (no_of_vaults.error) throw no_of_vaults.message;
+    no_of_vaults = (no_of_vaults.message).toString();
+
+    
+    let no_of_referrals = await crowdsale.TotalReferralsForUser(user_address);
+    if (no_of_referrals.error) throw no_of_referrals.message;
+    no_of_referrals = no_of_referrals.message;
+
+    let total_purchased = await userTotalPurchaseBalance(
+      user_address,
+      no_of_vaults
+    );
+    User.purchase_balance = total_purchased;
+
+    let total_bonus = await userTotalBonusBalance(user_address, no_of_vaults);
+    User.bonus_balance = total_bonus;
+
+    let user_vaults = await fetchAllUserVaults(user_address, no_of_vaults);
+    User.vaults = user_vaults;
+
+    let user_referrals = await fetchAllUserReferrals(user_address, no_of_referrals);
+    User.referrals = user_referrals;
+
+    console.log(User);
+    dispatch({
+      type: FETCH_USER_DATA_SUCCESS,
+      payload: User ,
+    });
+  } catch (error) {
+    console.log({ error });
+    // dispatch({
+    //   type: FETCH_USER_DATA_FAILURE,
+    //   payload: { error: true, message: error },
+    // });
+  }
+};
+
+export const fetchAllUserVaults = async (user_address, no_of_vaults) => {
+  let user_vaults = [];
+  for (let i = 0; i < no_of_vaults; i++) {
+    let user_vault = await timelock.UserTokenVault(user_address, i);
+
+    user_vaults.push(user_vault.message);
+  }
+  return user_vaults;
+};
+export const fetchAllUserReferrals = async (user_address, no_of_referrals) => {
+  let user_vaults = [];
+  for (let i = 0; i < no_of_referrals; i++) {
+    let user_vault = await crowdsale.UserReferrals(user_address, i);
+    console.log(user_vault);
+
+    user_vaults.push(user_vault.message);
+  }
+  return user_vaults;
+};
+
+export const userTotalPurchaseBalance = async (user_address, no_of_vaults) => {
+  let user_purchase_vaults = [];
+  for (let i = 0; i < no_of_vaults; i++) {
+    let user_vault = await timelock.UserTokenVault(user_address, i);
+    if (user_vault.message["category"] == "purchase") {
+      user_purchase_vaults.push(user_vault.message);
+    }
+  }
+  let totalPurchaseBalance = 0;
+  user_purchase_vaults.forEach((e) => {
+    totalPurchaseBalance += Number(e.amount_locked);
+  });
+  return totalPurchaseBalance;
+};
+
+export const userTotalBonusBalance = async (user_address, no_of_vaults) => {
+  let user_bonus_vaults = [];
+  for (let i = 0; i < no_of_vaults; i++) {
+    let user_vault = await timelock.UserTokenVault(user_address, i);
+    if (user_vault.message["category"] == "bonus") {
+      user_bonus_vaults.push(user_vault.message);
+    }
+  }
+  let totalPurchaseBalance = 0;
+  user_bonus_vaults.forEach((e) => {
+    totalPurchaseBalance += Number(e.amount_locked);
+  });
+  return totalPurchaseBalance;
 };

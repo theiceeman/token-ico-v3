@@ -62,8 +62,10 @@ describe("LinkTokenCrowdsale", function () {
       expect(reciept.events[2].args._numberOfTokens).to.equal(100);
       // Should increment crowdsales no of tokens sold
       expect(await linkCrowdSale.tokensSold()).to.equal(100);
-      // should increment buyers token balance
+      // should increment balance of timelock address balance
       expect(await linkToken.balanceOf(tokenTimeLock.address)).to.equal(100);
+      // should increment buyers tokens locked
+      expect(await tokenTimeLock.TotalUserTokensLocked(investor1.address)).to.equal(100);
 
       await expect(
         linkCrowdSale

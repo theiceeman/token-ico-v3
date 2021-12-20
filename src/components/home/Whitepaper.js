@@ -43,7 +43,7 @@ const Whitepaper = () => {
               <div className="img-wrapper">
                 <img
                   src={window.location.origin+"/images/index-about.png"}
-                  alt
+                  alt=""
                   className="wow fadeInUp"
                   data-animate="fadeInUp"
                   data-delay=".3s"
@@ -54,19 +54,19 @@ const Whitepaper = () => {
         </div>
       </div>
       <span className="shape1 header-shape">
-        <img src={window.location.origin+"/images/shape/home_6/about-light-1.png"} alt />
+        <img src={window.location.origin+"/images/shape/home_6/about-light-1.png"} alt="" />
       </span>
       <span className="shape2 header-shape">
-        <img src={window.location.origin+"/images/shape/home_6/about-light-2.png"} alt />
+        <img src={window.location.origin+"/images/shape/home_6/about-light-2.png"} alt="" />
       </span>
       <span className="bubble1 header-shape">
-        <img src={window.location.origin+"/images/particals_icon/fixed1.png"} alt />
+        <img src={window.location.origin+"/images/particals_icon/fixed1.png"} alt="" />
       </span>
       <span className="bubble2 header-shape">
-        <img src={window.location.origin+"/images/particals_icon/fixed2.png"} alt />
+        <img src={window.location.origin+"/images/particals_icon/fixed2.png"} alt="" />
       </span>
       <span className="bubble3 header-shape">
-        <img src={window.location.origin+"/images/particals_icon/fixed3.png"} alt />
+        <img src={window.location.origin+"/images/particals_icon/fixed3.png"} alt="" />
       </span>
       <div id="particles3-js" className="particles" />
     </section>

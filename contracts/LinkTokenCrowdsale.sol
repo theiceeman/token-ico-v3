@@ -83,7 +83,7 @@ contract LinkTokenCrowdsale {
         );
         require(token.transfer(address(tokenTimeLock), _numberOfTokens));
 
-        require(tokenTimeLock.lockUserToken(_numberOfTokens, msg.sender));
+        require(tokenTimeLock.lockUserToken(_numberOfTokens, msg.sender, 'purchase'));
         tokensSold += _numberOfTokens;
 
         if (referrer != address(0) && referrer != msg.sender) {
@@ -104,7 +104,7 @@ contract LinkTokenCrowdsale {
         uint256 referrers_reward = (amount_purchased / 100) *
             referrer_percentage;
         require(token.transfer(address(tokenTimeLock), referrers_reward));
-        require(tokenTimeLock.lockUserToken(referrers_reward, referrer));
+        require(tokenTimeLock.lockUserToken(referrers_reward, referrer, 'bonus'));
         tokensSold += referrers_reward;
         require(_setUserReferrals(referrer, referral, amount_purchased));
         return true;
@@ -154,7 +154,7 @@ contract LinkTokenCrowdsale {
             "Airdrop: airdrop has ended!"
         );
         require(token.transfer(address(tokenTimeLock), amtClaimedPerAirdrop));
-        require(tokenTimeLock.lockUserToken(amtClaimedPerAirdrop, msg.sender));
+        require(tokenTimeLock.lockUserToken(amtClaimedPerAirdrop, msg.sender, 'bonus'));
         setWhiteListedAddressForAirdrop(msg.sender);
         totalTokensAirdropped += amtClaimedPerAirdrop;
         tokensSold += amtClaimedPerAirdrop;

@@ -15,7 +15,7 @@ const Login = ({referrer}) => {
   const { rules, attributes } = __register;
 
   
-  console.log(referrer)
+  // console.log(referrer)
 
   const handleRegister = (e) => {
     e.preventDefault();

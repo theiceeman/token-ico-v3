@@ -31,6 +31,7 @@ contract TokenTimeLock is Ownable {
         address beneficiary;
         uint256 amount_locked;
         uint256 release_time;
+        string category;    //  bonus | purchase
         bool isReleased;
         bool isExists;
     }
@@ -63,20 +64,22 @@ contract TokenTimeLock is Ownable {
         address beneficiary,
         uint256 amount_to_lock,
         uint256 _releaseTime,
-        bool status
+        bool status,
+        string memory category
     ) internal {
         uint256 vault_id = totalUserVaults[beneficiary];
         UserTokenVault[beneficiary][vault_id] = TokenTimeLockDetails(
             beneficiary,
             amount_to_lock,
             _releaseTime,
+            category,
             status,
             true
         );
         ++totalUserVaults[beneficiary];
     }
 
-    function lockUserToken(uint256 amount_to_lock, address beneficiary)
+    function lockUserToken(uint256 amount_to_lock, address beneficiary, string memory category)
         public
         returns (bool success)
     {
@@ -90,7 +93,7 @@ contract TokenTimeLock is Ownable {
         );
         uint256 _releaseTime = block.timestamp + releaseTime;
 
-        _addNewVaultForUser(beneficiary, amount_to_lock, _releaseTime, false);
+        _addNewVaultForUser(beneficiary, amount_to_lock, _releaseTime, false, category);
 
         totalTokensLocked += amount_to_lock;
         TotalUserTokensLocked[beneficiary] += amount_to_lock;

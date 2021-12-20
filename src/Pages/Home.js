@@ -27,7 +27,8 @@ import {
 const Home = (props) => {
   const dispatch = useDispatch();
   let { id } = useParams();
-  const [referrer, setReferrer] = useState(null);
+  const [referrer, setReferrer] = useState('0x0000000000000000000000000000000000000000');
+  // console.log(referrer)
 
   const { data: token } = useSelector((state) => state.FetchTokenDetails);
   const [tokenDetails, setTokenDetails] = useState({});
@@ -39,7 +40,7 @@ const Home = (props) => {
 
   const { data: Auth } = useSelector((state) => state.UserAuth);
   const [userAccount, setUserAccount] = useState();
-  console.log(userAccount)
+  // console.log(userAccount)
 
   useEffect(async () => {
     if (id) {
@@ -87,6 +88,7 @@ const Home = (props) => {
         tokenDetails={tokenDetails}
         crowdsaleDetails={crowdsaleDetails}
         userAccount={userAccount}
+        referrer={referrer}
       />
       {/* End token_sale */}
       <Tokenomics />
@@ -99,7 +101,8 @@ const Home = (props) => {
       {/* End companis_supported */}
       <Footer />
       {/* ./ End Footer Area*/}
-      <Dashboard/>
+      <Dashboard userAccount={userAccount}
+        tokenDetails={tokenDetails} />
     </div>
   );
 };
