@@ -6,8 +6,12 @@ import {
   convertWithDecimal,
   formatNumber,
 } from "../../lib/general/helper-functions";
-import { SimpleToastError, SimpleToastSuccess } from "../../lib/validation/handlers/error-handlers";
+import {
+  SimpleToastError,
+  SimpleToastSuccess,
+} from "../../lib/validation/handlers/error-handlers";
 import { claimAirdrop } from "../../providers/redux/_actions/crowdsale-actions";
+import { claimLockedToken } from "../../providers/redux/_actions/timelock-actions";
 import { fetchUserData } from "../../providers/redux/_actions/user-actions";
 
 const Dashboard = ({ userAccount, tokenDetails, crowdsaleDetails }) => {
@@ -15,13 +19,13 @@ const Dashboard = ({ userAccount, tokenDetails, crowdsaleDetails }) => {
   const { data } = useSelector((state) => state.FetchUserData);
   const [userData, setUserData] = useState({});
   const [vaults, setVaults] = useState([]);
+  console.log(vaults);
   const [referrals, setReferrals] = useState([]);
-  
-  const { data:airdrop } = useSelector(
-    (state) => state.claimAirdrop
-  );
 
-  console.log(airdrop);
+  const { data: airdrop } = useSelector((state) => state.claimAirdrop);
+
+  const { data: claim_token } = useSelector((state) => state.claimLockedToken);
+  console.log(claim_token);
 
   const purchaseToken = (e) => {
     e.preventDefault();
@@ -32,6 +36,21 @@ const Dashboard = ({ userAccount, tokenDetails, crowdsaleDetails }) => {
     e.preventDefault();
     dispatch(claimAirdrop());
   };
+  const claim_locked_token = (e) => {
+    e.preventDefault();
+    let vault_id = e.target.getAttribute("vault_id")
+    dispatch(claimLockedToken(vault_id));
+  };
+
+  useEffect(() => {
+    if (claim_token?.error === true) {
+      SimpleToastError(claim_token.message);
+    } else if (claim_token?.error === false) {
+      SimpleToastSuccess(claim_token.message);
+      dispatch(fetchUserData(userAccount));
+    }
+  }, [claim_token]);
+
   useEffect(() => {
     if (airdrop?.error === true) {
       SimpleToastError(airdrop.message);
@@ -48,7 +67,6 @@ const Dashboard = ({ userAccount, tokenDetails, crowdsaleDetails }) => {
   }, [data]);
 
   useEffect(() => {
-    // console.log(userAccount);
     dispatch(fetchUserData(userAccount));
   }, [userAccount]);
   return (
@@ -78,7 +96,6 @@ const Dashboard = ({ userAccount, tokenDetails, crowdsaleDetails }) => {
           <div className="modal-body">
             <div className="row">
               <div className="col-lg-12">
-                {/* <div className="token-statistics card card-token height-auto roadmap-box"> */}
                 <div className="card-innr mb-10">
                   <a
                     onClick={purchaseToken}
@@ -86,15 +103,16 @@ const Dashboard = ({ userAccount, tokenDetails, crowdsaleDetails }) => {
                   >
                     Purchase Token
                   </a>
-                  {!userData.airdrop_is_claimed && <button
-                    type="button"
-                    onClick={claim_airdrop}
-                    className="btn btn-primary ml-10 btn-head p-auto"
-                  >
-                    Claim Airdrop
-                  </button>}
+                  {!userData.airdrop_is_claimed && (
+                    <button
+                      type="button"
+                      onClick={claim_airdrop}
+                      className="btn btn-primary ml-10 btn-head p-auto"
+                    >
+                      Claim Airdrop
+                    </button>
+                  )}
                 </div>
-                {/* </div> */}
               </div>
             </div>
             <div className="row">
@@ -145,13 +163,19 @@ const Dashboard = ({ userAccount, tokenDetails, crowdsaleDetails }) => {
                               <th scope="col">{tokenDetails.symbol} Token</th>
                               <th scope="col">Amount(BNB)</th>
                               <th scope="col">Release Date</th>
-                              <th scope="col">Type</th>
+                              <th colSpan={2} scope="col">
+                                Type
+                              </th>
                             </tr>
                           </thead>
                           <tbody>
                             {vaults?.map((vault, index) => (
                               <tr key={index}>
-                                <th scope="row">{++index}</th>
+                                <th scope="row">
+                                  {function(){
+                                    return index + 1;
+                                  }()}
+                                </th>
                                 <td>
                                   {formatNumber(vault.amount_locked.toString())}
                                 </td>
@@ -192,6 +216,17 @@ const Dashboard = ({ userAccount, tokenDetails, crowdsaleDetails }) => {
                                       Bonus
                                     </span>
                                   )}
+                                </td>
+                                <td>
+                                  <button
+                                    type="button"
+                                    vault_id={index}
+                                    onClick={claim_locked_token}
+                                    className="btn btn-success"
+                                    data-dismiss="modal"
+                                  >
+                                    Claim
+                                  </button>
                                 </td>
                               </tr>
                             ))}

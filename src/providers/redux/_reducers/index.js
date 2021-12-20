@@ -1,6 +1,7 @@
 // REDUCERS
 import { combineReducers } from "redux";
 import { buyTokensFromCrowdsaleReducer,  claimAirdropReducer,  FetchCrowdsaleDetailsReducer } from "./crowdsale-details-reducer";
+import { claimLockedTokenReducer } from "./timelock-reducer";
 import { FetchTokenDetailsReducer } from "./token-details-reducer";
 import {  UserAuthReducer,FetchUserDataReducer } from "./user-auth-reducer";
 
@@ -11,4 +12,5 @@ export default combineReducers({
   buyTokensFromCrowdsale: buyTokensFromCrowdsaleReducer,
   FetchUserData:FetchUserDataReducer,
   claimAirdrop: claimAirdropReducer,
+  claimLockedToken: claimLockedTokenReducer,
 });

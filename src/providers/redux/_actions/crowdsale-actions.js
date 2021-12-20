@@ -43,8 +43,7 @@ export const fetchCrowdsaleDetails = () => async (dispatch) => {
 export const buyTokens = (numberOfTokens, referrer) => async (dispatch) => {
   console.log("buying tokens from crowdsale...");
   dispatch({ type: BUY_TOKENS_REQUEST });
-
-  console.log({ numberOfTokens, referrer });
+  // console.log({ numberOfTokens, referrer });
 
   let res = await crowdsale.buyTokens(numberOfTokens, referrer);
   if (res.error === true) {
@@ -65,12 +64,12 @@ export const claimAirdrop = () => async (dispatch) => {
   dispatch({ type: CLAIM_AIRDROP_REQUEST });
 
   let res = await crowdsale.claimAirdrop();
-  if (res.error === true) {
+  if (res.error === false) {
     return dispatch({
       type: CLAIM_AIRDROP_SUCCESS,
       payload: res,
     });
-  } else if (res.error === false) {
+  } else if (res.error === true) {
     return dispatch({
       type: CLAIM_AIRDROP_FAILURE,
       payload: res,
