@@ -41,8 +41,9 @@ export const buyTokens = (numberOfTokens, referrer) => async (dispatch) => {
   console.log("buying tokens from crowdsale...");
   dispatch({ type: BUY_TOKENS_REQUEST });
 
+  console.log({numberOfTokens, referrer});
+
   let res = await crowdsale.buyTokens(numberOfTokens, referrer);
-  // console.log(res);
   if (res.error === true) {
     return dispatch({
       type: BUY_TOKENS_FAILURE,

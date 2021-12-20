@@ -14,6 +14,10 @@ export function formatNumber(n) {
   return String(n).replace(/(.)(?=(\d{3})+$)/g, "$1,");
   // "1,234,567,890"
 }
-export function convertWithDecimal(n, decimal){
-    return n / (10 ** decimal);
+export function convertWithDecimal(n, decimal) {
+  return n / 10 ** decimal;
+}
+export function convertTokenToCoin(token, crowdsale_rate) {
+  // 1LINK -> 0.001 ETH
+  return token * crowdsale_rate;
 }

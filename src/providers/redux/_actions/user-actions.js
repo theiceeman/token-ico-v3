@@ -99,11 +99,11 @@ export const signUp = async (data) => {
 
 export const validateReferrer = async (referrer) => {
   try {
-    let result = await timelock.UserTokenVault(referrer);
+    let result = await timelock.UserTokenVault(referrer, 0);
     if (result.error) {
       throw result.message;
     }
-    return { error: false, message: null };
+    return { error: false, message: result.message.beneficiary.toString() };
   } catch (error) {
     // console.log({ error });
     return { error: true, message: error };
@@ -121,12 +121,11 @@ export const fetchUserData = (user_address) => async (dispatch) => {
    */
   let User = {};
   try {
+    // console.log({user_address})
     let no_of_vaults = await timelock.totalUserVaults(user_address);
-    // console.log('damn!', 'no_of_vaults');return;
     if (no_of_vaults.error) throw no_of_vaults.message;
-    no_of_vaults = (no_of_vaults.message).toString();
+    no_of_vaults = no_of_vaults.message.toString();
 
-    
     let no_of_referrals = await crowdsale.TotalReferralsForUser(user_address);
     if (no_of_referrals.error) throw no_of_referrals.message;
     no_of_referrals = no_of_referrals.message;
@@ -143,20 +142,23 @@ export const fetchUserData = (user_address) => async (dispatch) => {
     let user_vaults = await fetchAllUserVaults(user_address, no_of_vaults);
     User.vaults = user_vaults;
 
-    let user_referrals = await fetchAllUserReferrals(user_address, no_of_referrals);
+    let user_referrals = await fetchAllUserReferrals(
+      user_address,
+      no_of_referrals
+    );
     User.referrals = user_referrals;
 
     console.log(User);
     dispatch({
       type: FETCH_USER_DATA_SUCCESS,
-      payload: User ,
+      payload: User,
     });
   } catch (error) {
-    console.log({ error });
-    // dispatch({
-    //   type: FETCH_USER_DATA_FAILURE,
-    //   payload: { error: true, message: error },
-    // });
+    // console.log({ error });
+    dispatch({
+      type: FETCH_USER_DATA_FAILURE,
+      payload: { error: true, message: error },
+    });
   }
 };
 

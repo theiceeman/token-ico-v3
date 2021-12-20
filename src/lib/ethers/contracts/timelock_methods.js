@@ -79,24 +79,29 @@ export const timelock = {
     }
   },
   UserTokenVault: async (user_address, vault_id) => {
+    // return {
+    //   error: false,
+    //   message: result.beneficiary,
+    // };
     try {
       const provider = await Auth.loadEthereumProvider();
-      if (provider) {
-        const contractInstance = new ethers.Contract(
-          process.env.REACT_APP_TIMELOCK_CONTRACT_ADDRESS,
-          Timelock.abi,
-          provider
-        );
-        let result = await contractInstance.UserTokenVault(user_address, vault_id);
-        console.log(result);
-
-        return {
-          error: false,
-          message: result,
-        };
-      } else {
+      if (!provider) {
         console.log("Ethereum object doesn't exist!");
       }
+      const contractInstance = new ethers.Contract(
+        process.env.REACT_APP_TIMELOCK_CONTRACT_ADDRESS,
+        Timelock.abi,
+        provider
+      );
+      let result = await contractInstance.UserTokenVault(
+        user_address,
+        vault_id
+      );
+      // console.log(result);
+      return {
+        error: false,
+        message: result,
+      };
     } catch (error) {
       // console.log(error);
       return { error: true, message: error.message };

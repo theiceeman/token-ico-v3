@@ -22,7 +22,7 @@ const Presale = ({ tokenDetails, crowdsaleDetails, userAccount, referrer }) => {
   const { data: buyToken } = useSelector(
     (state) => state.buyTokensFromCrowdsale
   );
-  // console.log(referrer)
+  console.log(referrer)
 
   const handleSubmit = (e) => {
     e.preventDefault();

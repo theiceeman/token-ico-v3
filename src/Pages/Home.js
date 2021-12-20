@@ -27,8 +27,10 @@ import {
 const Home = (props) => {
   const dispatch = useDispatch();
   let { id } = useParams();
-  const [referrer, setReferrer] = useState('0x0000000000000000000000000000000000000000');
-  // console.log(referrer)
+  // console.log(typeof id)
+  const [referrer, setReferrer] = useState(
+    "0x0000000000000000000000000000000000000000"
+  );
 
   const { data: token } = useSelector((state) => state.FetchTokenDetails);
   const [tokenDetails, setTokenDetails] = useState({});
@@ -40,18 +42,7 @@ const Home = (props) => {
 
   const { data: Auth } = useSelector((state) => state.UserAuth);
   const [userAccount, setUserAccount] = useState();
-  // console.log(userAccount)
 
-  useEffect(async () => {
-    if (id) {
-      let verifyReferrer = await validateReferrer(id);
-      if (!verifyReferrer.error) {
-        setReferrer(id);
-      }
-    }
-  }, [id]);
-
-  // track user account auth
   useEffect(() => {
     if (Auth?.error === true) {
       SimpleToastError(Auth.message);
@@ -59,17 +50,31 @@ const Home = (props) => {
       setUserAccount(Auth.message);
     }
   }, [Auth]);
-  // track token contract
+
   useEffect(() => {
     token && setTokenDetails(token);
   }, [token]);
-  // track crowdsale contract
+
   useEffect(() => {
     crowdsale && setCrowdsaleDetails(crowdsale);
   }, [crowdsale]);
 
-  // fetch contract details
-  useEffect(() => {
+  const validReferrals = async (referrer_id) => {
+    let verifyReferrer = await validateReferrer(referrer_id);
+    console.log("damn!!", verifyReferrer);
+    if (!verifyReferrer.error) {
+      console.log({ referrer_id });
+      setReferrer(referrer_id);
+    }
+  };
+  useEffect(async () => {
+    validReferrals(id);
+  }, [id]);
+
+  useEffect(async () => {
+    // console.log(id)
+    validReferrals(id);
+
     dispatch(authenticateUser());
     dispatch(_fetchTokenDetails());
     dispatch(fetchCrowdsaleDetails());
@@ -101,8 +106,11 @@ const Home = (props) => {
       {/* End companis_supported */}
       <Footer />
       {/* ./ End Footer Area*/}
-      <Dashboard userAccount={userAccount}
-        tokenDetails={tokenDetails} />
+      <Dashboard
+        userAccount={userAccount}
+        tokenDetails={tokenDetails}
+        crowdsaleDetails={crowdsaleDetails}
+      />
     </div>
   );
 };
