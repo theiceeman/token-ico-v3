@@ -100,8 +100,6 @@ const Home = (props) => {
       {/* End token_distribution */}
       <Roadmap />
       {/* End roadmap */}
-      <Login referrer={referrer} />
-      {/* Login & signup */}
       <Partners />
       {/* End companis_supported */}
       <Footer />

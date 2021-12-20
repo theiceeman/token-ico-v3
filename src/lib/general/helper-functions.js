@@ -21,3 +21,8 @@ export function convertTokenToCoin(token, crowdsale_rate) {
   // 1LINK -> 0.001 ETH
   return token * crowdsale_rate;
 }
+
+export function convertEpochToDate(date_in_secs){
+  var myDate = new Date(date_in_secs*1000);
+return myDate.toLocaleString() ; // 01/10/2020, 10:35:02
+}

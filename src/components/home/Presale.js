@@ -10,6 +10,7 @@ import {
 } from "../../lib/validation/handlers/error-handlers";
 import { buyTokens } from "../../providers/redux/_actions/crowdsale-actions";
 import { convertWithDecimal } from "../../lib/general/helper-functions";
+import { fetchUserData } from "../../providers/redux/_actions/user-actions";
 
 const Presale = ({ tokenDetails, crowdsaleDetails, userAccount, referrer }) => {
   const dispatch = useDispatch();
@@ -52,6 +53,7 @@ const Presale = ({ tokenDetails, crowdsaleDetails, userAccount, referrer }) => {
       SimpleToastError(buyToken.message);
     } else if (buyToken?.error === false) {
       SimpleToastSuccess(buyToken.message);
+      dispatch(fetchUserData(userAccount));
     }
   }, [buyToken]);
   return (

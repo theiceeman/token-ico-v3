@@ -49,7 +49,6 @@ export const authenticateUser = () => async (dispatch) => {
       type: USER_AUTH_FAILURE,
       payload: error,
     });
-    // console.log({ error });
   }
 };
 
@@ -113,15 +112,8 @@ export const validateReferrer = async (referrer) => {
 export const fetchUserData = (user_address) => async (dispatch) => {
   console.log("fetch user data...");
   dispatch({ type: FETCH_USER_DATA_REQUEST });
-  /* 
-    purchase_balance: 
-    bonus_balance:
-    vaults:[]
-    referrals:[]
-   */
   let User = {};
   try {
-    // console.log({user_address})
     let no_of_vaults = await timelock.totalUserVaults(user_address);
     if (no_of_vaults.error) throw no_of_vaults.message;
     no_of_vaults = no_of_vaults.message.toString();
@@ -147,6 +139,10 @@ export const fetchUserData = (user_address) => async (dispatch) => {
       no_of_referrals
     );
     User.referrals = user_referrals;
+
+    let airdrop_status = await crowdsale.whiteListedAddressForAirdrop(
+      user_address);
+    User.airdrop_is_claimed = airdrop_status.message;
 
     console.log(User);
     dispatch({
@@ -175,8 +171,6 @@ export const fetchAllUserReferrals = async (user_address, no_of_referrals) => {
   let user_vaults = [];
   for (let i = 0; i < no_of_referrals; i++) {
     let user_vault = await crowdsale.UserReferrals(user_address, i);
-    console.log(user_vault);
-
     user_vaults.push(user_vault.message);
   }
   return user_vaults;

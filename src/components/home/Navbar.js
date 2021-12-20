@@ -41,7 +41,7 @@ const Navbar = ({ userAccount }) => {
         >
           <i className="fas fa-bars" />
         </button>
-        <a className="navbar-brand" data-scroll href="index.html">
+        <a className="navbar-brand" data-scroll href="./">
           <img
             src={window.location.origin + "/images/Seriena.png"}
             alt="logo"
@@ -50,7 +50,7 @@ const Navbar = ({ userAccount }) => {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ml-auto">
             <li className="nav-item">
-              <a data-scroll href="#header-06" className="nav-link active">
+              <a data-scroll href="./" className="nav-link active">
                 Home
               </a>
             </li>
