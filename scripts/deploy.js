@@ -6,14 +6,14 @@ CROWDSALE->0x140748C52AA24ADFF7D18e630365c1481dFEF76d
 */
 
 /* 
-token address 0x29b2440db4A256B0c1E6d3B4CDcaA68E2440A08f
-crowdsale address 0x3C368B86AF00565Df7a3897Cfa9195B9434A59f9
-timelock address 0x3BB898B4Bbe24f68A4e9bE46cFE72D1787FD74F4
+token address = 0x7e1B41ba3b4965751f09a0dA7294F84e3241722D
+crowdsale address = 0x9a8d223b4a6570Ad62cBF6aF52B136d1575D72c6
+timelock address = 0xaa1f40187677AdB98Fdf2D748D78C1Be21f09f8C
  */
 async function main() {
   const [admin] = await ethers.getSigners();
   const LinkToken = await ethers.getContractFactory("LinkToken");
-  const linkToken = await LinkToken.deploy(1000000);
+  const linkToken = await LinkToken.deploy(1000000000000000000000000);
   await linkToken.deployed();
   console.log("token address "+linkToken.address)
 
@@ -41,7 +41,7 @@ async function main() {
   await tokenTimeLock.deployed();
   console.log("timelock address "+tokenTimeLock.address)
 
-  await linkToken.transfer(linkCrowdSale.address, 750000); // Transfer 75% of total supply to crowdsale
+  await linkToken.transfer(linkCrowdSale.address, 750000000000000000000000); // Transfer 75% of total supply to crowdsale
   await linkCrowdSale.setTimeLock(tokenTimeLock.address);
 
 
