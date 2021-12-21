@@ -49,7 +49,8 @@
     "test:crowdsale": "hardhat test --network hardhat ./test/LinkTokenCrowdsale-test.js",
     "test:timelock": "hardhat test --network hardhat ./test/TimeLock-test.js",
     "deploy:localhost": "npx hardhat run --network localhost scripts/run.js",
-    "deploy:fork": "npx hardhat run --network hardhat scripts/run.js"
+    "deploy:fork": "npx hardhat run --network hardhat scripts/run.js",
+    "deploy:mumbai": "npx hardhat run --network polygon_mumbai scripts/deploy.js"
   },
   "browserslist": {
     "production": [

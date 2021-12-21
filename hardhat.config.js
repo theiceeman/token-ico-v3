@@ -2,14 +2,8 @@ require("@nomiclabs/hardhat-waffle");
 require("@nomiclabs/hardhat-etherscan");
 require("solidity-coverage");
 require("./tasks/PrintAccounts");
-const {
-  BSC_TEST_NODE_URL,
-  DEV_ACCT_PRV_KEY,
-  BSC_MAIN_NODE_URL,
-  LIVE_ACCT_PRV_KEY,
-  BSCSCAN_API_KEY,
-  LOCAL_PRV_KEY,
-} = require("./secrets.json");
+const dotenv = require("dotenv");
+dotenv.config();
 
 
 
@@ -26,26 +20,28 @@ module.exports = {
       url: "https://eth-rinkeby.alchemyapi.io/v2/123abc123abc123abc123abc123abcde",
       accounts: [privateKey1, privateKey2, ...]
     } */
-    bsc_testnet: {
-      url: BSC_TEST_NODE_URL,
-      accounts: [DEV_ACCT_PRV_KEY],
+    polygon_mumbai: {
+      url: process.env.REACT_APP_POLYGON_MUMBAI_TEST_NODE_URL,
+      accounts: [process.env.REACT_APP_DEV_ACCT_PRV_KEY],
+    },
+    /* bsc_testnet: {
+      url: process.env.REACT_APP_TEST_NODE_URL,
+      accounts: [process.env.REACT_APP_DEV_ACCT_PRV_KEY],
     },
     bsc_mainnet: {
-      url: BSC_MAIN_NODE_URL,
-      accounts: [LIVE_ACCT_PRV_KEY],
-    },
+      url: process.env.REACT_APP_BSC_MAIN_NODE_URL,
+      accounts: [process.env.REACT_APP_LIVE_ACCT_PRV_KEY],
+    }, */
     localhost: {
       url: `http://localhost:8545`,
-      accounts: [`${LOCAL_PRV_KEY}`],
+      accounts: [`${process.env.REACT_APP_LOCAL_PRV_KEY}`],
       timeout: 150000,
       chainId: 31337,
       // gasPrice: parseInt(utils.parseUnits("132", "gwei")),
     },
   },
   etherscan: {
-    // Your API key for Etherscan
-    // Obtain one at https://etherscan.io/
-    apiKey: BSCSCAN_API_KEY,
+    apiKey: process.env.REACT_APP_BSCSCAN_API_KEY,
   },
   solidity: {
     compilers: [
