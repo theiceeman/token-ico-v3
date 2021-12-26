@@ -43,6 +43,24 @@ const Home = (props) => {
   const { data: Auth } = useSelector((state) => state.UserAuth);
   const [userAccount, setUserAccount] = useState();
 
+  
+
+  if(window.ethereum) {
+    window.ethereum.on('chainChanged', () => {
+      window.location.reload();
+    })
+    window.ethereum.on('accountsChanged', () => {
+      window.location.reload();
+    })
+  }
+
+  const validReferrals = async (referrer_id) => {
+    let verifyReferrer = await validateReferrer(referrer_id);
+    if (!verifyReferrer.error) {
+      setReferrer(referrer_id);
+    }
+  };
+
   useEffect(() => {
     if (Auth?.error === true) {
       SimpleToastError(Auth.message);
@@ -59,22 +77,13 @@ const Home = (props) => {
     crowdsale && setCrowdsaleDetails(crowdsale);
   }, [crowdsale]);
 
-  const validReferrals = async (referrer_id) => {
-    let verifyReferrer = await validateReferrer(referrer_id);
-    console.log("damn!!", verifyReferrer);
-    if (!verifyReferrer.error) {
-      console.log({ referrer_id });
-      setReferrer(referrer_id);
-    }
-  };
+
   useEffect(async () => {
     validReferrals(id);
   }, [id]);
 
   useEffect(async () => {
-    // console.log(id)
     validReferrals(id);
-
     dispatch(authenticateUser());
     dispatch(_fetchTokenDetails());
     dispatch(fetchCrowdsaleDetails());
