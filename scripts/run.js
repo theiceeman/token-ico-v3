@@ -3,7 +3,7 @@ const hre = require("hardhat");
 async function main() {
   const [admin, investor1, investor2, investor3] = await ethers.getSigners();
     const LinkToken = await ethers.getContractFactory("LinkToken");
-    const linkToken = await LinkToken.deploy(1000000);
+    const linkToken = await LinkToken.deploy('1000000000000000000000000');
     await linkToken.deployed();
     console.log("token address "+linkToken.address)
 
@@ -30,7 +30,7 @@ async function main() {
     );
     await tokenTimeLock.deployed();
 
-    await linkToken.transfer(linkCrowdSale.address, 750000); // Transfer 75% of total supply to crowdsale
+    await linkToken.transfer(linkCrowdSale.address, '750000000000000000000000'); // Transfer 75% of total supply to crowdsale
     await linkCrowdSale.setTimeLock(tokenTimeLock.address);
     console.log("TimeLock address "+tokenTimeLock.address)
 }

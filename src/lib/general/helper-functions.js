@@ -14,6 +14,9 @@ export function formatNumber(n) {
   return String(n).replace(/(.)(?=(\d{3})+$)/g, "$1,");
   // "1,234,567,890"
 }
+export function convertToDecimal(n, decimal) {
+  return n * 10 ** decimal;
+}
 export function convertWithDecimal(n, decimal) {
   return n / 10 ** decimal;
 }

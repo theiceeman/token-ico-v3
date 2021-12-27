@@ -1,8 +1,9 @@
 import Crowdsale from "../../../abi/artifacts/contracts/LinkTokenCrowdsale.sol/LinkTokenCrowdsale.json";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { Auth } from "../Auth";
 import { token } from "./token_methods";
 import {
+  convertToDecimal,
   convertWithDecimal,
   formatNumber,
 } from "../../general/helper-functions";
@@ -71,6 +72,8 @@ export const crowdsale = {
       let decimal = await token.decimals();
       let name = await token.name();
       let tokenPrice = await crowdsale.tokenPrice();
+      // console.log(numberOfTokens * tokenPrice.message)
+      // console.log(convertToDecimal(numberOfTokens * tokenPrice.message, decimal.message));
       let result = await contractInstance.buyTokens(numberOfTokens, referrer, {
         value: (numberOfTokens * tokenPrice.message).toString(),
       });
