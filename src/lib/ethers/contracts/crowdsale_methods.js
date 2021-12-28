@@ -72,11 +72,15 @@ export const crowdsale = {
       let decimal = await token.decimals();
       let name = await token.name();
       let tokenPrice = await crowdsale.tokenPrice();
-      // console.log(numberOfTokens * tokenPrice.message)
-      // console.log(convertToDecimal(numberOfTokens * tokenPrice.message, decimal.message));
-      let result = await contractInstance.buyTokens(numberOfTokens, referrer, {
-        value: (numberOfTokens * tokenPrice.message).toString(),
-      });
+
+      // (numberOfTokens * 10 ** 18).toString(),
+      let result = await contractInstance.buyTokens(
+        numberOfTokens ,
+        referrer,
+        {
+          value: (numberOfTokens * tokenPrice.message).toString(),
+        }
+      );
 
       return {
         error: false,
