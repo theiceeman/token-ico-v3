@@ -156,8 +156,7 @@ contract LinkTokenCrowdsale {
             "Airdrop: amount to be claimed is not set!"
         );
         require(
-            totalTokensAirdropped + amtClaimedPerAirdrop <=
-                totalTokensForAirdrop,
+            totalTokensAirdropped + amtClaimedPerAirdrop <= totalTokensForAirdrop,
             "Airdrop: airdrop has ended!"
         );
         require(token.transfer(address(tokenTimeLock), amtClaimedPerAirdrop));

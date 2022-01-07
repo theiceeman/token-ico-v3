@@ -7,13 +7,13 @@ describe("LinkTokenCrowdsale", function () {
   before(async () => {
     [admin, investor1, investor2, investor3] = await ethers.getSigners();
     LinkToken = await ethers.getContractFactory("LinkToken");
-    linkToken = await LinkToken.deploy("1000000000000000000000000"); //  1000000 000000000000000000
+    linkToken = await LinkToken.deploy("1000000000000000000000000"); //  1000000
     await linkToken.deployed();
 
     tokenPrice = "1000000000000000"; //  in wei = 0.001 ETH
     referrerPercentage = "10";
-    totalTokensForAirdrop = "90";
-    amtClaimedPerAirdrop = "50";
+    totalTokensForAirdrop = "90000000000000000000"; //  90
+    amtClaimedPerAirdrop = "50000000000000000000"; //  50
     LinkTokenCrowdsale = await ethers.getContractFactory("LinkTokenCrowdsale");
     linkCrowdSale = await LinkTokenCrowdsale.deploy(
       linkToken.address,
@@ -61,20 +61,20 @@ describe("LinkTokenCrowdsale", function () {
       // Event logs the correct required arguments
       expect(reciept.events[2].args._buyer).to.equal(investor1.address);
       expect(reciept.events[2].args._numberOfTokens).to.equal(
-        BigNumber.from("100000000000000000000")
+        BigNumber.from("100000000000000000000") //  100
       );
       // Should increment crowdsales no of tokens sold
       expect(await linkCrowdSale.tokensSold()).to.equal(
-        BigNumber.from("100000000000000000000")
+        BigNumber.from("100000000000000000000") //  100
       );
       // should increment balance of timelock address balance
       expect(await linkToken.balanceOf(tokenTimeLock.address)).to.equal(
-        BigNumber.from("100000000000000000000")
+        BigNumber.from("100000000000000000000") //  100
       );
       // should increment buyers tokens locked
       expect(
         await tokenTimeLock.TotalUserTokensLocked(investor1.address)
-      ).to.equal(BigNumber.from("100000000000000000000"));
+      ).to.equal(BigNumber.from("100000000000000000000")); //  100
 
       await expect(
         linkCrowdSale
@@ -85,7 +85,7 @@ describe("LinkTokenCrowdsale", function () {
       ).to.be.revertedWith(
         "Crowdsale: msg.value must equal number of tokens in wei!"
       );
-      // console.log(BigNumber.from(('900000' * 10 ** 18).toString()));
+
       await expect(
         linkCrowdSale
           .connect(investor1)
@@ -109,18 +109,18 @@ describe("LinkTokenCrowdsale", function () {
         });
       await txn.wait();
       expect(await linkCrowdSale.tokensSold()).to.equal(
-        BigNumber.from("210000000000000000000")
+        BigNumber.from("210000000000000000000") //  210
       );
     });
 
     it("should update referrers_total_locked_tokens after rewarding them", async function () {
       expect(
         await tokenTimeLock.TotalUserTokensLocked(investor1.address)
-      ).to.equal(BigNumber.from("110000000000000000000"));
+      ).to.equal(BigNumber.from("110000000000000000000")); //  110
     });
     it("should update totalTokensLocked after rewarding a referrer", async function () {
       expect(await tokenTimeLock.totalTokensLocked()).to.equal(
-        BigNumber.from("210000000000000000000")
+        BigNumber.from("210000000000000000000") //  210
       );
     });
     it("should register new referrals for a referrer", async function () {
@@ -131,41 +131,38 @@ describe("LinkTokenCrowdsale", function () {
       expect(userReferrals.referral_address).to.equal(investor2.address);
     });
   });
-  /* 
 
-  
   describe("claimAirdrop", function () {
-
-    it("should fail if caller has recieved airdrop previously", async function (){
+    it("should fail if caller has recieved airdrop previously", async function () {
       let txn = await linkCrowdSale.connect(investor1).claimAirdrop();
       txn.wait();
       await expect(
         linkCrowdSale.connect(investor1).claimAirdrop()
-      ).to.be.revertedWith(
-        "Airdrop: you've recieved airdrop previously!"
-      );
-    })
-    
+      ).to.be.revertedWith("Airdrop: you've recieved airdrop previously!");
+    });
+
     it("should update total tokensSold after claiming airdrop", async function () {
-      expect(await linkCrowdSale.tokensSold()).to.equal(260);
+      expect(await linkCrowdSale.tokensSold()).to.equal(
+        BigNumber.from("260000000000000000000") //  260
+      );
     });
     it("should update totalTokensLocked after claiming airdrop", async function () {
-      expect(await tokenTimeLock.totalTokensLocked()).to.equal(260);
+      expect(await tokenTimeLock.totalTokensLocked()).to.equal(
+        BigNumber.from("260000000000000000000") //  260
+      );
     });
     it("should whitelist users address after claiming airdrop", async function () {
       let whiteList = await linkCrowdSale.whiteListedAddressForAirdrop(
-        investor1.address);
+        investor1.address
+      );
       expect(whiteList).to.equal(true);
     });
-    it("should fail if totalTokensAirdropped will be greater than totalTokensForAirdrop", async function (){
+    it("should fail if totalTokensAirdropped will be greater than totalTokensForAirdrop", async function () {
       await expect(
         linkCrowdSale.connect(investor2).claimAirdrop()
-      ).to.be.revertedWith(
-        "Airdrop: airdrop has ended!"
-      );
-    })
-    
-  })
+      ).to.be.revertedWith("Airdrop: airdrop has ended!");
+    });
+  });
 
   describe("endSaleFunction", function () {
     it("should end token crowdsale", async function () {
@@ -173,12 +170,18 @@ describe("LinkTokenCrowdsale", function () {
         linkCrowdSale.connect(investor1).endSale()
       ).to.be.revertedWith("Crowdsale: only admin can end crowdsale!");
       await linkCrowdSale.connect(admin).endSale();
+
       // Ensure the remaining tokens after sale are transferred to the admin
-      expect(await linkToken.balanceOf(admin.address)).to.equal(1000000 - 260);
+      let totalSupply = BigNumber.from(await linkToken.totalSupply());
+      let totalTokensLocked = BigNumber.from(
+        await tokenTimeLock.totalTokensLocked()
+      );
+      expect(await linkToken.balanceOf(admin.address)).to.equal(
+        totalSupply.sub(totalTokensLocked)
+      );
       expect(await ethers.provider.getBalance(linkCrowdSale.address)).to.equal(
         0
       );
     });
   });
-   */
 });
