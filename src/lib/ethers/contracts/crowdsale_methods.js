@@ -154,6 +154,7 @@ export const crowdsale = {
         message: "Airdrop claimed successfully",
       };
     } catch (error) {
+      console.log(error)
       return { error: true, message: error };
     }
   },

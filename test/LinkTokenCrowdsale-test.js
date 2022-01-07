@@ -1,12 +1,13 @@
 const { expect } = require("chai");
 const { BigNumber } = require("ethers");
 const { ethers } = require("hardhat");
+const { toDecimal } = require("./helpers/utils");
 
 describe("LinkTokenCrowdsale", function () {
   before(async () => {
     [admin, investor1, investor2, investor3] = await ethers.getSigners();
     LinkToken = await ethers.getContractFactory("LinkToken");
-    linkToken = await LinkToken.deploy(1000000);
+    linkToken = await LinkToken.deploy("1000000000000000000000000"); //  1000000 000000000000000000
     await linkToken.deployed();
 
     tokenPrice = "1000000000000000"; //  in wei = 0.001 ETH
@@ -31,7 +32,7 @@ describe("LinkTokenCrowdsale", function () {
     );
     await tokenTimeLock.deployed();
 
-    await linkToken.transfer(linkCrowdSale.address, 750000); // Transfer 75% of total supply to crowdsale
+    await linkToken.transfer(linkCrowdSale.address, "750000000000000000000000"); // Transfer 75% of total supply to crowdsale
     await linkCrowdSale.setTimeLock(tokenTimeLock.address);
   });
 
@@ -42,16 +43,16 @@ describe("LinkTokenCrowdsale", function () {
     });
 
     it("should sell tokens to investors", async function () {
-      let numberOfTokens = "100";
+      let numberOfTokens = "100"; //  100
       let x = numberOfTokens * tokenPrice;
-      // 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
-      // 0x0000000000000000000000000000000000000000
+
       let zero_address = "0x0000000000000000000000000000000000000000";
       let txn = await linkCrowdSale
         .connect(investor1)
-        .buyTokens(numberOfTokens, zero_address, {
+        .buyTokens(toDecimal(numberOfTokens, 18), zero_address, {
           value: x.toString(),
         });
+
       let reciept = await txn.wait();
       // Triggers one event
       expect(reciept.events.length).to.equal(3);
@@ -59,34 +60,43 @@ describe("LinkTokenCrowdsale", function () {
       expect(reciept.events[2].event).to.equal("Sell");
       // Event logs the correct required arguments
       expect(reciept.events[2].args._buyer).to.equal(investor1.address);
-      expect(reciept.events[2].args._numberOfTokens).to.equal(100);
+      expect(reciept.events[2].args._numberOfTokens).to.equal(
+        BigNumber.from("100000000000000000000")
+      );
       // Should increment crowdsales no of tokens sold
-      expect(await linkCrowdSale.tokensSold()).to.equal(100);
+      expect(await linkCrowdSale.tokensSold()).to.equal(
+        BigNumber.from("100000000000000000000")
+      );
       // should increment balance of timelock address balance
-      expect(await linkToken.balanceOf(tokenTimeLock.address)).to.equal(100);
+      expect(await linkToken.balanceOf(tokenTimeLock.address)).to.equal(
+        BigNumber.from("100000000000000000000")
+      );
       // should increment buyers tokens locked
-      expect(await tokenTimeLock.TotalUserTokensLocked(investor1.address)).to.equal(100);
+      expect(
+        await tokenTimeLock.TotalUserTokensLocked(investor1.address)
+      ).to.equal(BigNumber.from("100000000000000000000"));
 
       await expect(
         linkCrowdSale
           .connect(investor1)
-          .buyTokens(numberOfTokens, zero_address, {
+          .buyTokens(toDecimal(numberOfTokens, 18), zero_address, {
             value: "10000",
           })
       ).to.be.revertedWith(
         "Crowdsale: msg.value must equal number of tokens in wei!"
       );
-
+      // console.log(BigNumber.from(('900000' * 10 ** 18).toString()));
       await expect(
-        linkCrowdSale.connect(investor1).buyTokens("900000", zero_address, {
-          value: ("900000" * tokenPrice).toString(),
-        })
+        linkCrowdSale
+          .connect(investor1)
+          .buyTokens(BigNumber.from("900000000000000000000000"), zero_address, {
+            value: ("900000" * tokenPrice).toString(),
+          })
       ).to.be.revertedWith(
         "Crowdsale: You can't buy more tokens than available!"
       );
     });
   });
-
   describe("rewardReferrerFunction", function () {
     it("should update tokensSold after rewarding referrer", async function () {
       let numberOfTokens = "100";
@@ -94,20 +104,24 @@ describe("LinkTokenCrowdsale", function () {
       let referrer = investor1.address;
       let txn = await linkCrowdSale
         .connect(investor2)
-        .buyTokens(numberOfTokens, referrer, {
+        .buyTokens(toDecimal(numberOfTokens, 18), referrer, {
           value: wei_equiv.toString(),
         });
       await txn.wait();
-      expect(await linkCrowdSale.tokensSold()).to.equal(210);
+      expect(await linkCrowdSale.tokensSold()).to.equal(
+        BigNumber.from("210000000000000000000")
+      );
     });
 
     it("should update referrers_total_locked_tokens after rewarding them", async function () {
       expect(
         await tokenTimeLock.TotalUserTokensLocked(investor1.address)
-      ).to.equal(110);
+      ).to.equal(BigNumber.from("110000000000000000000"));
     });
     it("should update totalTokensLocked after rewarding a referrer", async function () {
-      expect(await tokenTimeLock.totalTokensLocked()).to.equal(210);
+      expect(await tokenTimeLock.totalTokensLocked()).to.equal(
+        BigNumber.from("210000000000000000000")
+      );
     });
     it("should register new referrals for a referrer", async function () {
       let userReferrals = await linkCrowdSale.UserReferrals(
@@ -117,6 +131,7 @@ describe("LinkTokenCrowdsale", function () {
       expect(userReferrals.referral_address).to.equal(investor2.address);
     });
   });
+  /* 
 
   
   describe("claimAirdrop", function () {
@@ -165,4 +180,5 @@ describe("LinkTokenCrowdsale", function () {
       );
     });
   });
+   */
 });

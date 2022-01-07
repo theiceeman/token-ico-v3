@@ -1,5 +1,6 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.0;
+import "hardhat/console.sol";
 import "./LinkToken.sol";
 import "./TokenTimeLock.sol";
 
@@ -74,7 +75,8 @@ contract LinkTokenCrowdsale {
         payable
     {
         require(
-            msg.value == multiply(_numberOfTokens, tokenPrice),
+            msg.value ==
+                multiply(_numberOfTokens / 10**token.decimals(), tokenPrice),
             "Crowdsale: msg.value must equal number of tokens in wei!"
         );
         require(
@@ -83,7 +85,9 @@ contract LinkTokenCrowdsale {
         );
         require(token.transfer(address(tokenTimeLock), _numberOfTokens));
 
-        require(tokenTimeLock.lockUserToken(_numberOfTokens, msg.sender, 'purchase'));
+        require(
+            tokenTimeLock.lockUserToken(_numberOfTokens, msg.sender, "purchase")
+        );
         tokensSold += _numberOfTokens;
 
         if (referrer != address(0) && referrer != msg.sender) {
@@ -104,7 +108,9 @@ contract LinkTokenCrowdsale {
         uint256 referrers_reward = (amount_purchased / 100) *
             referrer_percentage;
         require(token.transfer(address(tokenTimeLock), referrers_reward));
-        require(tokenTimeLock.lockUserToken(referrers_reward, referrer, 'bonus'));
+        require(
+            tokenTimeLock.lockUserToken(referrers_reward, referrer, "bonus")
+        );
         tokensSold += referrers_reward;
         require(_setUserReferrals(referrer, referral, amount_purchased));
         return true;
@@ -150,11 +156,18 @@ contract LinkTokenCrowdsale {
             "Airdrop: amount to be claimed is not set!"
         );
         require(
-            totalTokensAirdropped + amtClaimedPerAirdrop <= totalTokensForAirdrop,
+            totalTokensAirdropped + amtClaimedPerAirdrop <=
+                totalTokensForAirdrop,
             "Airdrop: airdrop has ended!"
         );
         require(token.transfer(address(tokenTimeLock), amtClaimedPerAirdrop));
-        require(tokenTimeLock.lockUserToken(amtClaimedPerAirdrop, msg.sender, 'bonus'));
+        require(
+            tokenTimeLock.lockUserToken(
+                amtClaimedPerAirdrop,
+                msg.sender,
+                "bonus"
+            )
+        );
         setWhiteListedAddressForAirdrop(msg.sender);
         totalTokensAirdropped += amtClaimedPerAirdrop;
         tokensSold += amtClaimedPerAirdrop;
