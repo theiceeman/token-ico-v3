@@ -94,13 +94,13 @@ describe("TimeLockContract", function () {
       let x = numberOfTokens * tokenPrice;
       let txn = await linkCrowdSale
         .connect(investor1)
-        .buyTokens(numberOfTokens, {
+        .buyTokens(toDecimal(numberOfTokens, 18), ZERO_ADDRESS,{
           value: x.toString(),
         });
       await txn.wait();
 
       let tokenVault = await tokenTimeLock.UserTokenVault(investor1.address, 1);
-      expect(tokenVault.amount_locked).to.equal(200);
+      expect(tokenVault.amount_locked).to.equal(BigNumber.from("200000000000000000000"));   //  200
       //   console.log("totalTokensLocked",await tokenTimeLock.totalTokensLocked());
     });
 
@@ -121,22 +121,21 @@ describe("TimeLockContract", function () {
       let _releaseTime = (await latestTime()) + releaseTime;
       let txn = await linkCrowdSale
         .connect(investor1)
-        .buyTokens(numberOfTokens, {
+        .buyTokens(toDecimal(numberOfTokens, 18), ZERO_ADDRESS,{
           value: x.toString(),
         });
       await txn.wait();
-      // expect(txn).to.emit(tokenTimeLock, "TokenIsLocked").withArgs(investor1.address, numberOfTokens, _releaseTime);
       expect(txn).to.emit(tokenTimeLock, "TokenIsLocked");
     });
     // this test wont update the state of the blockchain due to `callStatic`, so totalTokens wont be incremented by `100`
     it("should return true after locking tokens", async () => {
       let result = await tokenTimeLock
         .connect(linkCrowdSale.address)
-        .callStatic.lockUserToken("100", investor1.address);
+        .callStatic.lockUserToken(BigNumber.from("100000000000000000000"), investor1.address, "purchase");  //  100
       await expect(result).to.equal(true);
     });
   });
-  /* 
+
   describe("claimFunction", async function () {
     it("should allow only valid vault_ids to be claimed", async () => {
       await expect(
@@ -151,7 +150,7 @@ describe("TimeLockContract", function () {
     it("should allow claim only when vesting period is over", async () => {
       await increaseTimeTo((await latestTime()) + (releaseTime + 1));
       await tokenTimeLock.connect(investor1).claim("1");
-      expect(await linkToken.balanceOf(investor1.address)).to.equal(200);
+      expect(await linkToken.balanceOf(investor1.address)).to.equal(BigNumber.from("200000000000000000000")); //  200
     });
     it("should allow claim only if vault isReleased status equals false", async () => {
       await increaseTimeTo((await latestTime()) + (releaseTime + 1));
@@ -163,13 +162,13 @@ describe("TimeLockContract", function () {
     });
     it("should update totalTokensLocked after claim", async () => {
       let totalTokensLocked = await tokenTimeLock.totalTokensLocked();
-      expect(totalTokensLocked).to.equal(300);
+      expect(totalTokensLocked).to.equal(BigNumber.from("300000000000000000000"));  //  300
     });
     it("should update TotalUserTokensLocked after claim", async () => {
       let TotalUserTokensLocked = await tokenTimeLock.TotalUserTokensLocked(
         investor1.address
       );
-      expect(TotalUserTokensLocked).to.equal(300);
+      expect(TotalUserTokensLocked).to.equal(BigNumber.from("300000000000000000000"));  //  300
     });
     it("should emit TokenIsClaimed event after claiming tokens", async () => {
       let tokenVault = await tokenTimeLock.UserTokenVault(investor1.address, 2);
@@ -187,5 +186,4 @@ describe("TimeLockContract", function () {
       await expect(result).to.equal(true);
     });
   });
-   */
 });

@@ -6,21 +6,22 @@ CROWDSALE->0x140748C52AA24ADFF7D18e630365c1481dFEF76d
 */
 
 /* 
-token address = 0x7e1B41ba3b4965751f09a0dA7294F84e3241722D
-crowdsale address = 0x9a8d223b4a6570Ad62cBF6aF52B136d1575D72c6
-timelock address = 0xaa1f40187677AdB98Fdf2D748D78C1Be21f09f8C
+POLYGON MUMBAI
+token address = 0x0c3D9De938BbBA4e62D7E8d9327F4C8Be15d1a57
+crowdsale address = 0x24FEE5d55f970E12ED0d723F6a92eEBAe578Cf2f
+timelock address = 0x737Bf3bA4fFC21ec8a01A6A68AEC61D22CB9cA0d
  */
 async function main() {
   const [admin] = await ethers.getSigners();
   const LinkToken = await ethers.getContractFactory("LinkToken");
-  const linkToken = await LinkToken.deploy(1000000000000000000000000);
+  const linkToken = await LinkToken.deploy("1000000000000000000000000");
   await linkToken.deployed();
   console.log("token address "+linkToken.address)
 
   const tokenPrice = "1000000000000000"; //  in wei = 0.001 ETH
   const referrerPercentage = "10";
-  const totalTokensForAirdrop = "90";
-  const amtClaimedPerAirdrop = "50";
+  const totalTokensForAirdrop = "90000000000000000000";
+  const amtClaimedPerAirdrop = "50000000000000000000";
   const LinkTokenCrowdsale = await ethers.getContractFactory("LinkTokenCrowdsale");
   const linkCrowdSale = await LinkTokenCrowdsale.deploy(
     linkToken.address,
@@ -41,7 +42,7 @@ async function main() {
   await tokenTimeLock.deployed();
   console.log("timelock address "+tokenTimeLock.address)
 
-  await linkToken.transfer(linkCrowdSale.address, 750000000000000000000000); // Transfer 75% of total supply to crowdsale
+  await linkToken.transfer(linkCrowdSale.address, "750000000000000000000000"); // Transfer 75% of total supply to crowdsale
   await linkCrowdSale.setTimeLock(tokenTimeLock.address);
 
 
