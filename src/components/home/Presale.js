@@ -23,13 +23,13 @@ const Presale = ({ tokenDetails, crowdsaleDetails, userAccount, referrer }) => {
   const { data: buyToken } = useSelector(
     (state) => state.buyTokensFromCrowdsale
   );
-  console.log(referrer)
+  // console.log(referrer)
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = new FormData(e.target);
     const values = Object.fromEntries(data.entries());
-    console.log(values);
+    // console.log(values);
     let validation = new Validator(values, rules);
 
     validation.setAttributeNames(attributes);
@@ -43,7 +43,7 @@ const Presale = ({ tokenDetails, crowdsaleDetails, userAccount, referrer }) => {
     }
 
     if (validation.passes()) {
-      console.log("passed");
+      // console.log("passed");
       dispatch(buyTokens(values.amount, referrer, userAccount));
     }
   };

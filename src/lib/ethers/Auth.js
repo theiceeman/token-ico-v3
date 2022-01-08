@@ -32,7 +32,7 @@ export const Auth = {
 
       if (accounts.length !== 0) {
         const account = accounts[0];
-        console.log("Found an authorized account:", account);
+        // console.log("Found an authorized account:", account);
         return { error: false, message: account };
       } else {
         throw "No authorized account found!";

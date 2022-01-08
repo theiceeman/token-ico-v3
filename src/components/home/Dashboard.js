@@ -193,7 +193,7 @@ const Dashboard = ({ userAccount, tokenDetails, crowdsaleDetails }) => {
                                       )
                                     )
                                   )} */}
-                                  {formatNumber(
+                                  {
                                     convertTokenToCoin(
                                       convertWithDecimal(
                                         vault.amount_locked,
@@ -201,7 +201,7 @@ const Dashboard = ({ userAccount, tokenDetails, crowdsaleDetails }) => {
                                       ),
                                       ethers.utils.formatEther(BigNumber.from(crowdsaleDetails.tokenPrice))
                                     )
-                                  )}
+                                  }
                                 </td>
                                 <td>
                                   {convertEpochToDate(
