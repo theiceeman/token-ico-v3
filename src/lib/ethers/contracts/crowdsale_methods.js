@@ -75,14 +75,15 @@ export const crowdsale = {
       let name = await token.name();
       let tokenPrice = await crowdsale.tokenPrice();
 
-      // (numberOfTokens * 10 ** 18).toString(),
       let result = await contractInstance.buyTokens(
-        toDecimal(numberOfTokens, 18) ,
+        toDecimal(numberOfTokens, 18),
         referrer,
         {
           value: (numberOfTokens * tokenPrice.message).toString(),
         }
       );
+
+      await provider.waitForTransaction(result.hash);
 
       return {
         error: false,
@@ -91,7 +92,7 @@ export const crowdsale = {
       };
     } catch (error) {
       console.log(error);
-      return rpcErrors(error)
+      return rpcErrors(error);
       // return { error: true, message: error.message };
     }
   },
@@ -151,6 +152,7 @@ export const crowdsale = {
         signer
       );
       let result = await contractInstance.claimAirdrop();
+      await provider.waitForTransaction(result.hash);
 
       return {
         error: false,
@@ -158,7 +160,7 @@ export const crowdsale = {
       };
     } catch (error) {
       console.log(error);
-      return rpcErrors(error)
+      return rpcErrors(error);
       // return { error: true, message: error };
     }
   },
