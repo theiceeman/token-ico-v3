@@ -1,5 +1,6 @@
 import { CrowdsaleConstants } from "../_constants/crowdsale-constants";
 import { crowdsale } from "../../../lib/ethers/contracts/crowdsale_methods";
+import { fetchUserData } from "./user-actions";
 
 const {
   FETCH_DETAILS_REQUEST,
@@ -40,7 +41,7 @@ export const fetchCrowdsaleDetails = () => async (dispatch) => {
   }
 };
 
-export const buyTokens = (numberOfTokens, referrer) => async (dispatch) => {
+export const buyTokens = (numberOfTokens, referrer, userAccount) => async (dispatch) => {
   console.log("buying tokens from crowdsale...");
   dispatch({ type: BUY_TOKENS_REQUEST });
   // console.log({ numberOfTokens, referrer });
@@ -52,6 +53,7 @@ export const buyTokens = (numberOfTokens, referrer) => async (dispatch) => {
       payload: res,
     });
   } else if (res.error === false) {
+    dispatch(fetchUserData(userAccount))
     return dispatch({
       type: BUY_TOKENS_SUCCESS,
       payload: res,

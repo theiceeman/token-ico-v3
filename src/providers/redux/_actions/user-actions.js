@@ -3,6 +3,7 @@ import { Request } from "../../../lib/api/http";
 import { Auth } from "../../../lib/ethers/Auth";
 import { crowdsale } from "../../../lib/ethers/contracts/crowdsale_methods";
 import { timelock } from "../../../lib/ethers/contracts/timelock_methods";
+import { convertWithDecimal } from "../../../lib/general/helper-functions";
 import {
   SimpleToastError,
   SimpleToastSuccess,
@@ -188,7 +189,7 @@ export const userTotalPurchaseBalance = async (user_address, no_of_vaults) => {
   user_purchase_vaults.forEach((e) => {
     totalPurchaseBalance += Number(e.amount_locked);
   });
-  return totalPurchaseBalance;
+  return convertWithDecimal(totalPurchaseBalance,18);
 };
 
 export const userTotalBonusBalance = async (user_address, no_of_vaults) => {
@@ -203,5 +204,5 @@ export const userTotalBonusBalance = async (user_address, no_of_vaults) => {
   user_bonus_vaults.forEach((e) => {
     totalPurchaseBalance += Number(e.amount_locked);
   });
-  return totalPurchaseBalance;
+  return convertWithDecimal(totalPurchaseBalance,18);
 };

@@ -9,8 +9,8 @@ async function main() {
 
     const tokenPrice = "1000000000000000"; //  in wei = 0.001 ETH
     const referrerPercentage = "10";
-    const totalTokensForAirdrop = "90";
-    const amtClaimedPerAirdrop = "50";
+    const totalTokensForAirdrop = "90000000000000000000";
+    const amtClaimedPerAirdrop = "50000000000000000000";
     const LinkTokenCrowdsale = await ethers.getContractFactory("LinkTokenCrowdsale");
     const linkCrowdSale = await LinkTokenCrowdsale.deploy(
       linkToken.address,

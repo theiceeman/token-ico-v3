@@ -44,7 +44,7 @@ const Presale = ({ tokenDetails, crowdsaleDetails, userAccount, referrer }) => {
 
     if (validation.passes()) {
       console.log("passed");
-      dispatch(buyTokens(values.amount, referrer));
+      dispatch(buyTokens(values.amount, referrer, userAccount));
     }
   };
 

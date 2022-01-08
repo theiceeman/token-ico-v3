@@ -1,3 +1,4 @@
+import { BigNumber, ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -16,16 +17,16 @@ import { fetchUserData } from "../../providers/redux/_actions/user-actions";
 
 const Dashboard = ({ userAccount, tokenDetails, crowdsaleDetails }) => {
   const dispatch = useDispatch();
+
   const { data } = useSelector((state) => state.FetchUserData);
   const [userData, setUserData] = useState({});
   const [vaults, setVaults] = useState([]);
-  console.log(vaults);
+  // console.log(vaults);
   const [referrals, setReferrals] = useState([]);
 
   const { data: airdrop } = useSelector((state) => state.claimAirdrop);
 
   const { data: claim_token } = useSelector((state) => state.claimLockedToken);
-  console.log(claim_token);
 
   const purchaseToken = (e) => {
     e.preventDefault();
@@ -38,7 +39,7 @@ const Dashboard = ({ userAccount, tokenDetails, crowdsaleDetails }) => {
   };
   const claim_locked_token = (e) => {
     e.preventDefault();
-    let vault_id = e.target.getAttribute("vault_id")
+    let vault_id = e.target.getAttribute("vault_id");
     dispatch(claimLockedToken(vault_id));
   };
 
@@ -64,6 +65,7 @@ const Dashboard = ({ userAccount, tokenDetails, crowdsaleDetails }) => {
     data && setUserData(data);
     data && setVaults(data?.vaults);
     data && setReferrals(data?.referrals);
+    // tokenPriceInEth = ethers.utils.formatEther(crowdsaleDetails.tokenPrice);
   }, [data]);
 
   useEffect(() => {
@@ -172,21 +174,32 @@ const Dashboard = ({ userAccount, tokenDetails, crowdsaleDetails }) => {
                             {vaults?.map((vault, index) => (
                               <tr key={index}>
                                 <th scope="row">
-                                  {function(){
+                                  {(function () {
                                     return index + 1;
-                                  }()}
+                                  })()}
                                 </th>
                                 <td>
-                                  {formatNumber(vault.amount_locked.toString())}
+                                  {formatNumber(
+                                    convertWithDecimal(vault.amount_locked, 18)
+                                  )}
                                 </td>
                                 <td>
-                                  {formatNumber(
+                                  {/* {formatNumber(
                                     convertTokenToCoin(
-                                      vault.amount_locked.toString(),
+                                      vault.amount_locked,
                                       convertWithDecimal(
                                         crowdsaleDetails.tokenPrice,
                                         tokenDetails.decimals
                                       )
+                                    )
+                                  )} */}
+                                  {formatNumber(
+                                    convertTokenToCoin(
+                                      convertWithDecimal(
+                                        vault.amount_locked,
+                                        18
+                                      ),
+                                      ethers.utils.formatEther(BigNumber.from(crowdsaleDetails.tokenPrice))
                                     )
                                   )}
                                 </td>

@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import Timelock from "../../../abi/artifacts/contracts/TokenTimeLock.sol/TokenTimeLock.json";
 import { ethers } from "ethers";
 import { Auth } from "../Auth";
+import { rpcErrors } from "../../general/helper-functions";
 dotenv.config();
 
 export const timelock = {
@@ -139,7 +140,7 @@ export const timelock = {
       };
     } catch (error) {
       console.log(error);
-      return { error: true, message: error.message };
+      return rpcErrors(error)
     }
   },
 };

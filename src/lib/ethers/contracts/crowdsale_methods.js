@@ -6,6 +6,8 @@ import {
   convertToDecimal,
   convertWithDecimal,
   formatNumber,
+  rpcErrors,
+  toDecimal,
 } from "../../general/helper-functions";
 import dotenv from "dotenv";
 dotenv.config();
@@ -75,7 +77,7 @@ export const crowdsale = {
 
       // (numberOfTokens * 10 ** 18).toString(),
       let result = await contractInstance.buyTokens(
-        numberOfTokens ,
+        toDecimal(numberOfTokens, 18) ,
         referrer,
         {
           value: (numberOfTokens * tokenPrice.message).toString(),
@@ -89,7 +91,8 @@ export const crowdsale = {
       };
     } catch (error) {
       console.log(error);
-      return { error: true, message: error.message };
+      return rpcErrors(error)
+      // return { error: true, message: error.message };
     }
   },
   UserReferrals: async (user_address, id) => {
@@ -154,8 +157,9 @@ export const crowdsale = {
         message: "Airdrop claimed successfully",
       };
     } catch (error) {
-      console.log(error)
-      return { error: true, message: error };
+      console.log(error);
+      return rpcErrors(error)
+      // return { error: true, message: error };
     }
   },
   whiteListedAddressForAirdrop: async (user_address) => {
