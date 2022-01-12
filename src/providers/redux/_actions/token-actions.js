@@ -79,7 +79,7 @@ export const fetchTokenDetailsFromApi = async () => {
   let data = {
     jsonrpc: "2.0",
     method: "alchemy_getTokenMetadata",
-    params: ["0x0c3D9De938BbBA4e62D7E8d9327F4C8Be15d1a57"],
+    params: [process.env.REACT_APP_TOKEN_CONTRACT_ADDRESS],
     id: 1,
   };
   let result = await Request.post(
