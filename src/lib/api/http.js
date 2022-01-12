@@ -6,7 +6,8 @@ export const Request = {
   post: async (url, data) => {
     const config = data?.config;
     const headers = data?.config?.headers;
-    return await axios.post(`${baseUrl}/${url}`, data.payload, {
+    console.log(url)
+    return await axios.post(`${url}`, data.payload, {
       ...config,
       headers: {
         ...headers,
